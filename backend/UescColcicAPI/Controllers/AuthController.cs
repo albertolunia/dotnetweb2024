@@ -17,7 +17,9 @@ public class AuthController : ControllerBase
         if (userLogin.Username == "admin" && userLogin.Password == "password")
         {
             var token = GenerateJwtToken();
-            return Ok(new { token });
+            var bearerToken = $"Bearer {token}";
+
+            return Ok(new { token = bearerToken });
         }
 
         return Unauthorized();
@@ -33,7 +35,6 @@ public class AuthController : ControllerBase
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ChaveSecretaColcicComMaisDe16Caracteres"));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
         var token = new JwtSecurityToken(
             issuer: "colcic.uesc.br",
             audience: "colcic.uesc.br",
